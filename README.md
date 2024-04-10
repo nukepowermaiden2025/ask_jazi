@@ -1,2 +1,2 @@
-# anni_ai
-Will predict markets ripe for real estate longterm rentals
+# ask_jazi
+Seek to understand health risks for black women
