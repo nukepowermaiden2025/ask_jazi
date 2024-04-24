@@ -10,7 +10,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc",
     "dev": "node --env-file=.env --watch -r ts-node/register src/index.ts",
-    "birth": "ts-node bin/save-births.ts"
+    "birth": "ts-node bin/save-births.ts",
+    "simple-birth": "ts-node bin/simple-birth.ts"
   },
   "keywords": [],
   "author": "",

@@ -30,17 +30,27 @@ class BirthStat {
         this.race = race;
         this.age = '0';
         this.rate = 0;
-        this.isBlack = false;
+        this.isBlack = this.isAAOrBlackOrigin();
     }
     isAAOrBlackOrigin() {
-        if (this.race) {
-            return [NON_HIS_BLACK, NON_HIS_RACE_BLACK].includes(this.race);
-        }
-        return false;
+        var _a;
+        if (((_a = this.race) === null || _a === void 0 ? void 0 : _a.trim()) === '')
+            return false;
+        return [NON_HIS_BLACK, NON_HIS_RACE_BLACK].includes(this.race); //Look up how to use partials again
     }
 }
 BirthStat.originBlack = 'Non-Hispanic Black';
-//create a function to run everything
+const generateStats = (rows) => {
+    let colCount = 0;
+    const stats = rows.map((row) => {
+        const cleanRow = row.replace(/\bNon-Hispanic[,]?/g, '');
+        const stat = cleanRow.split(',');
+        if (colCount < stat.length)
+            colCount = stat.length;
+        console.log(colCount);
+    });
+    return { stats, colCount };
+};
 (async () => {
     //create a variable for the file
     //Use fs to read the file
@@ -59,18 +69,24 @@ BirthStat.originBlack = 'Non-Hispanic Black';
         }
         return c.toLowerCase();
     });
-    const raceCol = 1;
-    const stats = rows.splice(1, 1).map((row) => {
-        const item = row.split(',');
-        let newStat = new BirthStat(item[raceCol]);
-        const data = cols.map((d, idx) => {
-            return { [d]: item[idx] };
-        });
-        const birthObject = Object.assign({}, ...data);
-        const result = Object.assign(Object.assign({}, newStat), birthObject);
-        console.log(result);
-    });
-    console.log(cols);
-    console.log(rows[10]);
+    const { colCount, stats } = generateStats(rows);
+    console.log(`This is max number of columns ${colCount}`);
+    //TODO extract into a new function
+    // const stats = rows.slice(1).map((row: string) => {
+    //     //Find Non-Hispanic and remove it from the set
+    //     const cleanRow = row.replace(/\bNon-Hispanic\b[,]?/gi, '')
+    //     const item = row.split(',')
+    //     //Create an instance of birth origin
+    //     let newStat = new BirthStat(item[1] as BirthOrigin) 
+    //     //Get the cols and map them into an array set with key/value object
+    //     const data = cols.map((d: any, idx:number) => {
+    //         return { [d]: item[idx]}
+    //     })
+    //     //Convert the array of objects into one object
+    //     const birthObject = Object.assign({}, ...data)
+    //     const result = { ...newStat, ...birthObject }
+    //     console.log(result.isBlack)
+    //     console.log(typeof result)
+    // })
     console.log(typeof data);
 })();

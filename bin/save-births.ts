@@ -59,7 +59,18 @@ class BirthStat {
       
     }
 }
-//create a function to run everything
+
+const generateStats = (rows: string[]) => {
+    let colCount = 0
+    const stats = rows.map((row: string) => {
+        const cleanRow = row.replace(/\bNon-Hispanic[,]?/g, '')
+        const stat = cleanRow.split(',')
+
+        if (colCount < stat.length) colCount = stat.length
+        console.log(colCount)
+    })
+    return {stats, colCount}
+}
 (async () => {
     //create a variable for the file
     //Use fs to read the file
@@ -76,25 +87,30 @@ class BirthStat {
         }
         return c.toLowerCase()
     })
-    const raceCol = 1
+    
+    const { colCount, stats } = generateStats(rows)
+    console.log(`This is max number of columns ${colCount}`)
 
-    const stats = rows.slice(1).map((row: string) => {
-        const item = row.split(',')
+    //TODO extract into a new function
+    // const stats = rows.slice(1).map((row: string) => {
+    //     //Find Non-Hispanic and remove it from the set
+    //     const cleanRow = row.replace(/\bNon-Hispanic\b[,]?/gi, '')
+    //     const item = row.split(',')
 
-        //Create an instance of birth origin
-        let newStat = new BirthStat(item[raceCol] as BirthOrigin) 
+    //     //Create an instance of birth origin
+    //     let newStat = new BirthStat(item[1] as BirthOrigin) 
      
-        //Get the cols and map them into an array set with key/value object
-        const data = cols.map((d: any, idx:number) => {
-            return { [d]: item[idx]}
-        })
+    //     //Get the cols and map them into an array set with key/value object
+    //     const data = cols.map((d: any, idx:number) => {
+    //         return { [d]: item[idx]}
+    //     })
      
-        //Convert the array of objects into one object
-        const birthObject = Object.assign({}, ...data)
-        const result = { ...newStat, ...birthObject }
-        console.log(result.isBlack)
-        console.log(typeof result)
-    })
+    //     //Convert the array of objects into one object
+    //     const birthObject = Object.assign({}, ...data)
+    //     const result = { ...newStat, ...birthObject }
+    //     console.log(result.isBlack)
+    //     console.log(typeof result)
+    // })
 
     console.log(typeof data)
 })()
