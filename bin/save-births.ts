@@ -88,29 +88,29 @@ const generateStats = (rows: string[]) => {
         return c.toLowerCase()
     })
     
-    const { colCount, stats } = generateStats(rows)
-    console.log(`This is max number of columns ${colCount}`)
+    //const { colCount, stats } = generateStats(rows)
+    //console.log(`This is max number of columns ${colCount}`)
 
     //TODO extract into a new function
-    // const stats = rows.slice(1).map((row: string) => {
-    //     //Find Non-Hispanic and remove it from the set
-    //     const cleanRow = row.replace(/\bNon-Hispanic\b[,]?/gi, '')
-    //     const item = row.split(',')
+    const stats = rows.slice(1).map((row: string) => {
+        //Find Non-Hispanic and remove it from the set
+        const cleanRow = row.replace(/\bNon-Hispanic\b[,]?/gi, '')
+        const item = row.split(',')
 
-    //     //Create an instance of birth origin
-    //     let newStat = new BirthStat(item[1] as BirthOrigin) 
+        //Create an instance of birth origin
+        let newStat = new BirthStat(item[1] as BirthOrigin) 
      
-    //     //Get the cols and map them into an array set with key/value object
-    //     const data = cols.map((d: any, idx:number) => {
-    //         return { [d]: item[idx]}
-    //     })
+        //Get the cols and map them into an array set with key/value object
+        const data = cols.map((d: any, idx:number) => {
+            return { [d]: item[idx]}
+        })
      
-    //     //Convert the array of objects into one object
-    //     const birthObject = Object.assign({}, ...data)
-    //     const result = { ...newStat, ...birthObject }
-    //     console.log(result.isBlack)
-    //     console.log(typeof result)
-    // })
+        //Convert the array of objects into one object
+        const birthObject = Object.assign({}, ...data)
+        const result = { ...newStat, ...birthObject }
+        console.log(result.isBlack)
+        console.log(typeof result)
+    })
 
     console.log(typeof data)
 })()
